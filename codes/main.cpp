@@ -112,9 +112,7 @@ void ring_alarm(){
       }
       else if (digitalRead(OK)==LOW){
         print_line("Alarm snoozed for 5 mins",1,32,0);
-        delay(200);
-        alarm_minutes[i] +=5;
-        break;
+        delay(5*60*1000);
       }
       tone(BUZZER, notes[i]);
       delay(500);
@@ -122,6 +120,8 @@ void ring_alarm(){
       delay(200);
     }
   }
+  int UTC_Offset = (UTC_OFFSET[0]*60*60) + (UTC_OFFSET[1]*60);
+  configTime(UTC_Offset, UTC_OFFSET_DST, NTP_SERVER);
 }
 
 void update_time_with_check_alarm () {
@@ -205,7 +205,7 @@ void set_time(){
   }
   while (true){
     display.clearDisplay();
-    print_line("Enter minute:" + String(UTC_OFFSET[1]), 0, 0,2);
+    print_line("Enter minutes from UTC:" + String(UTC_OFFSET[1]), 0, 0,2);
 
     String pressed = wait_for_button_press();
     if (pressed == "UP"){
@@ -256,9 +256,9 @@ void active_alarm(){
     if (alarm_active[i]==true){
       
       print_line("Alarm " + String(i+1) , 1, x, 2);
-      x +=8;
+      x +=9;
       print_line( String(i+1) +":"+ String(alarm_hours[i]) +":"+ String(alarm_minutes[i]), 1, x, 0);
-      x +=8;
+      x +=9;
     }
   }
   delay(1000);
@@ -328,6 +328,8 @@ void set_alarm(int alarm){
   print_line("Time is set", 1, 0, 2);
   print_line(String(alarm+1) +":"+ String(alarm_hours[alarm]) +":"+ String(alarm_minutes[alarm]), 1, 8, 0);
   delay(2000);
+  int UTC_Offset = (UTC_OFFSET[0]*60*60) + (UTC_OFFSET[1]*60);
+  configTime(UTC_Offset, UTC_OFFSET_DST, NTP_SERVER);
 }
 
 void remove_alarm(int alarm){
@@ -415,12 +417,12 @@ void go_to_menu(){
       }
       if ( current_mode == 0){
         display.clearDisplay();
-        print_line(String(String(options[3])) ,2,0,0);
+        print_line(String(String(options[3])) ,1,0,0);
         delay(200);
       }
       else{
         display.clearDisplay();
-        print_line(String(options[current_mode-1]) ,2,0,0);
+        print_line(String(options[current_mode-1]) ,1,0,0);
         delay(200);
       }
       display.clearDisplay();
