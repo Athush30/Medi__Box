@@ -28,7 +28,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH,SCREEN_HEIGHT, &Wire, OLED_RESET);
 DHTesp dhtSensor;
 
 
-int UTC_OFFSET[]={0,0};
+int UTC_OFFSET[]={5,30};
 
 int n_notes=8;
 int c=262;
@@ -105,14 +105,16 @@ void ring_alarm(){
   while (digitalRead(CANCEL)==HIGH){
     for (int i=0; i< n_notes; i++){
       if (digitalRead(CANCEL)==LOW){
-        print_line("Alarm stopped",16,0,0);
+        print_line("Alarm stopped",1,32,0);
         delay(200);
         digitalWrite(LED_1, LOW);
         break;
       }
       else if (digitalRead(OK)==LOW){
-        print_line("Alarm snoozed for 5 mins",16,0,0);
-        delay(5*60*1000);
+        print_line("Alarm snoozed for 5 mins",1,32,0);
+        delay(200);
+        alarm_minutes[i] +=5;
+        break;
       }
       tone(BUZZER, notes[i]);
       delay(500);
@@ -135,15 +137,11 @@ void update_time_with_check_alarm () {
     alarm_enabled = true;
   }
   if (alarm_enabled ==  true){
-    print_line("00000000000000000",1,0,0);
     delay(500);
   }
   if (alarm_enabled ==  true){
-    print_line("11111111111111111111111111",1,0,0);
     for (int i=0; i<n_alarms; i++){
       if (alarm_triggered[i] ==false & alarm_active[i] ==true & hours == alarm_hours[i] & minutes==alarm_minutes[i]){
-        display.clearDisplay();
-        print_line("2222222222222222222222",1,0,0);
         ring_alarm();
         alarm_triggered[i] = true;
         alarm_active[i] = false;
@@ -156,25 +154,21 @@ const char* wait_for_button_press(){
   while (true){
     if (digitalRead(UP) == 0){
       delay(200);
-      print_line("10",2,0,0);
       delay(200);
       return "UP";
     }
     else if (digitalRead(DOWN) == 0){
       delay(200);
-      print_line("20",2,0,0);
       delay(200);
       return "DOWN";
     }
     else if (digitalRead(CANCEL) == 0){
       delay(200);
-      print_line("30",2,0,0);
       delay(200);
       return "CANCEL";
     }
     else if (digitalRead(OK) == 0){
       delay(200);
-      print_line("40",2,0,0);
       delay(200);
       return "OK";
     }
@@ -228,7 +222,7 @@ void set_time(){
     }
     else if (pressed == "OK"){
       delay(200);
-      UTC_OFFSET[1] += (UTC_OFFSET[1]);
+      UTC_OFFSET[1] = (UTC_OFFSET[1]);
       break;
     }
 
@@ -237,7 +231,7 @@ void set_time(){
       break;
     }
   }
-  int UTC_Offset=UTC_OFFSET[0]*60*60 + UTC_OFFSET[1]*60;
+  int UTC_Offset = (UTC_OFFSET[0]*60*60) + (UTC_OFFSET[1]*60);
   display.clearDisplay();
   print_line("Enter the direction from UTC", 0, 0, 2);
   print_line("+ up", 0, 16, 2);
@@ -246,7 +240,10 @@ void set_time(){
   if (pressed == "DOWN") {
     UTC_Offset *= -1;
   }
+  display.clearDisplay();
+  print_line(String(UTC_OFFSET[0])+" " + String(UTC_OFFSET[1])+" "+ String(UTC_Offset), 0, 0, 2);
   configTime(UTC_Offset, UTC_OFFSET_DST, NTP_SERVER);
+  delay(2000);
   display.clearDisplay();
   print_line("Time is set", 0, 0, 2);
   delay(1000);
@@ -400,17 +397,11 @@ void go_to_menu(){
       delay(200);
     }
     if (alarm_enabled == true){
-      display.clearDisplay();
-      print_line("00000000000000000",1,0,0);
       delay(500);
     }
     String pressed= wait_for_button_press();
-    print_line(String(pressed) + "000",1,0,0);
-    delay(200);
     display.clearDisplay();
     while(pressed != "OK" & (pressed == "UP" | pressed == "DOWN")){
-      print_line(pressed + "000",1,0,0);
-      delay(200);
       if (pressed=="UP"){
         current_mode +=1;
         current_mode %= max_modes;
@@ -424,18 +415,16 @@ void go_to_menu(){
       }
       if ( current_mode == 0){
         display.clearDisplay();
-        print_line(String(4) ,2,0,0);
+        print_line(String(String(options[3])) ,2,0,0);
         delay(200);
       }
       else{
         display.clearDisplay();
-        print_line(String(current_mode) ,2,0,0);
+        print_line(String(options[current_mode-1]) ,2,0,0);
         delay(200);
       }
       display.clearDisplay();
       pressed = wait_for_button_press();
-      display.clearDisplay();
-      print_line(pressed + "00111",1,0,0);
       delay(200);
     }
     Serial.println(current_mode);
