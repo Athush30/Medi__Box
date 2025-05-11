@@ -5,6 +5,8 @@
 #include <WiFi.h>
 #include <time.h>
 #include <DHTesp.h>
+#include <esp32servo.h>
+#include <PubSubClient.h>
 
 #define NTP_SERVER "pool.ntp.org"
 
@@ -23,10 +25,12 @@
 #define DOWN 32
 #define OK 33
 #define DHT 12
+#define servoPin 17
+#define ldr 16
 
 Adafruit_SSD1306 display(SCREEN_WIDTH,SCREEN_HEIGHT, &Wire, OLED_RESET);
 DHTesp dhtSensor;
-
+Servo servoMotor;
 
 int UTC_OFFSET[]={5,30};
 
@@ -40,6 +44,9 @@ int a=440;
 int b=494;
 int c_h =523;
 int notes[]={c,d,e,f,g,a,b,c_h};
+float ServoAngle=0.0;
+float SamplingInterval=0.0;
+float SendingInterval=0.0;
 
 int days=0;
 int hours =0;
@@ -52,12 +59,12 @@ int alarm_minutes[] = {39,10};
 bool alarm_triggered[] = {false,false};
 bool alarm_active[] = {false,false};
 
-unsigned long timeNow=0;
-unsigned long timeLast=0;
-
 int current_mode =0;
 int max_modes = 4; 
 String options[]={"1 - Set Time", "2 - Set Alarm", "3 - View Active Alarm", "4-Remove Alarm"};
+
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
 
 void print_line(String text, int text_size, int row, int column){
   display.setTextSize(text_size);
@@ -105,12 +112,14 @@ void ring_alarm(){
   while (digitalRead(CANCEL)==HIGH){
     for (int i=0; i< n_notes; i++){
       if (digitalRead(CANCEL)==LOW){
+        display.clearDisplay();
         print_line("Alarm stopped",1,32,0);
         delay(200);
         digitalWrite(LED_1, LOW);
         break;
       }
       else if (digitalRead(OK)==LOW){
+        display.clearDisplay();
         print_line("Alarm snoozed for 5 mins",1,32,0);
         delay(5*60*1000);
       }
@@ -240,8 +249,7 @@ void set_time(){
   if (pressed == "DOWN") {
     UTC_Offset *= -1;
   }
-  display.clearDisplay();
-  print_line(String(UTC_OFFSET[0])+" " + String(UTC_OFFSET[1])+" "+ String(UTC_Offset), 0, 0, 2);
+  
   configTime(UTC_Offset, UTC_OFFSET_DST, NTP_SERVER);
   delay(2000);
   display.clearDisplay();
@@ -325,8 +333,8 @@ void set_alarm(int alarm){
     }
   }
   display.clearDisplay();
-  print_line("Time is set", 1, 0, 2);
-  print_line(String(alarm+1) +":"+ String(alarm_hours[alarm]) +":"+ String(alarm_minutes[alarm]), 1, 8, 0);
+  print_line("Alarm is set", 1, 0, 2);
+  print_line("Alarm " + String(alarm+1) +"  "+ String(alarm_hours[alarm]) +":"+ String(alarm_minutes[alarm]), 1, 8, 0);
   delay(2000);
   int UTC_Offset = (UTC_OFFSET[0]*60*60) + (UTC_OFFSET[1]*60);
   configTime(UTC_Offset, UTC_OFFSET_DST, NTP_SERVER);
@@ -464,6 +472,55 @@ void check_temp(void){
   }
 }
 
+void connectToBroker(){
+  while(!mqttClient.connected()){
+    Serial.println("Attempting mqtt");
+    display.clearDisplay();
+    print_line("Attempting mqtt",2,0,0);
+    delay(3000);
+    if(mqttClient.connect("ESP32-463517108394")){
+      Serial.println("mqtt connected");
+      print_line("Connected to mqtt",2,0,0);
+      delay(3000);
+      display.clearDisplay();
+      print_line("Connecting to subscribe",2,0,0);
+      mqttClient.subscribe("sampling_interval");
+      mqttClient.subscribe("sending_interval");
+      mqttClient.subscribe("MINIMUM-SERVO-ANGLE");
+    }
+    else{
+      display.clearDisplay();
+      print_line("failed mqtt",2,0,0);
+      Serial.print("Failed");
+      Serial.print(mqttClient.state());
+      delay(5000);
+    }
+  }
+}
+
+void receiveCallback(char* topic, byte* payload, unsigned int length){
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.print("] ");
+
+  char payloadCharAr[length];
+  for(int i=0 ; i <length; i++){
+    Serial.println((char)payload[i]);
+    payloadCharAr[i]=(char)payload[i];
+    Serial.print("Message arrived [");
+  }
+  Serial.println();
+  if(strcmp(topic,"sampling_interval")==0){
+     SamplingInterval = atof(payloadCharAr);
+  }
+  else if(strcmp(topic,"sending_interval")==0){
+    SendingInterval = atof(payloadCharAr);
+  }  
+  else if (strcmp(topic, "MINIMUM-SERVO-ANGLE") == 0) {
+    ServoAngle = atof(payloadCharAr);
+  }
+}
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -492,16 +549,33 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED){
     delay(250);
     display.clearDisplay();
-    print_line("Connecting to WiFi",2,0,0);
+    print_line("Connecting to WiFiiii",2,0,0);
     std::cout<< "connected";
   }
+
   display.clearDisplay();
-  print_line("Connected to wifi",2 ,0, 0);
+  print_line("Connected to wifiiiii",2 ,0, 0);
+  
+  mqttClient.setServer("test.mosquitto.org", 1883);
+
+  mqttClient.setCallback(receiveCallback);
+
+  connectToBroker();
+  
   int UTC_Offset=UTC_OFFSET[0];
   configTime(UTC_Offset, UTC_OFFSET_DST, NTP_SERVER);
+
+  
 }
 
 void loop() {
+  Serial.println("loop");
+  if (!mqttClient.connected()){
+    Serial.println("Reconnecting to MQTT");
+    connectToBroker();
+  }
+  mqttClient.loop();
+  Serial.println(SamplingInterval);
   update_time_with_check_alarm();
   if (digitalRead(CANCEL) == LOW){
     delay(1000);
