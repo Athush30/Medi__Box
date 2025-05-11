@@ -1,0 +1,816 @@
+[
+    {
+        "id": "d1f88d95ee17136b",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b2b5e2c25859f82f",
+        "type": "group",
+        "z": "d1f88d95ee17136b",
+        "name": "Temperature",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "a3f32e86522226eb",
+            "5539074145b40c77",
+            "917cc4550f68a3c9",
+            "6703c76b9f327d5a"
+        ],
+        "x": 134,
+        "y": 579,
+        "w": 532,
+        "h": 222
+    },
+    {
+        "id": "77a6a52fcb9bad0f",
+        "type": "group",
+        "z": "d1f88d95ee17136b",
+        "name": "Light Intensity",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "d63f486d72372bbc",
+            "5e6f5d7a43d2d0dd",
+            "739023b314a31355",
+            "140d4d9b2af28fe3",
+            "9cbf8912078ac5a6",
+            "114eb36ff23ca896",
+            "528588268beb3075",
+            "53fa9c5c47de066a",
+            "364fee15f30171b0",
+            "8bf96a46c5b8a92c"
+        ],
+        "x": 134,
+        "y": 99,
+        "w": 532,
+        "h": 462
+    },
+    {
+        "id": "ed98d08575cc2f69",
+        "type": "group",
+        "z": "d1f88d95ee17136b",
+        "name": "Main",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "2cbed0dcb5590a27",
+            "b7420e6f1f2b4918",
+            "3f6a375f517c737c",
+            "a36564fc68f393d9",
+            "455380e531d7f30f",
+            "732943e01930899e",
+            "3c0edf4364d79927",
+            "dd9b51b4c7f05b20",
+            "09455a62c3621e42",
+            "832007ecb119be53"
+        ],
+        "x": 734,
+        "y": 239,
+        "w": 912,
+        "h": 482
+    },
+    {
+        "id": "a3f32e86522226eb",
+        "type": "mqtt in",
+        "z": "d1f88d95ee17136b",
+        "g": "b2b5e2c25859f82f",
+        "name": "",
+        "topic": "DJTG-ADMIN-TEMP",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "604bc44edd7f1330",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 250,
+        "y": 760,
+        "wires": [
+            [
+                "917cc4550f68a3c9",
+                "6703c76b9f327d5a",
+                "5539074145b40c77"
+            ]
+        ]
+    },
+    {
+        "id": "5539074145b40c77",
+        "type": "ui_gauge",
+        "z": "d1f88d95ee17136b",
+        "g": "b2b5e2c25859f82f",
+        "name": "Temeprature",
+        "group": "ea6b285e142738fa",
+        "order": 2,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": "Temperaure Gauge",
+        "label": "°C",
+        "format": "{{payload}}",
+        "min": "10",
+        "max": "40",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "26",
+        "seg2": "32",
+        "diff": false,
+        "className": "",
+        "x": 570,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "917cc4550f68a3c9",
+        "type": "ui_chart",
+        "z": "d1f88d95ee17136b",
+        "g": "b2b5e2c25859f82f",
+        "name": "",
+        "group": "ea6b285e142738fa",
+        "order": 4,
+        "width": "4",
+        "height": "4",
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "10",
+        "ymax": "40",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 590,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d63f486d72372bbc",
+        "type": "mqtt in",
+        "z": "d1f88d95ee17136b",
+        "g": "77a6a52fcb9bad0f",
+        "name": "",
+        "topic": "Light intensity",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "604bc44edd7f1330",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 250,
+        "y": 140,
+        "wires": [
+            [
+                "5e6f5d7a43d2d0dd",
+                "739023b314a31355",
+                "53fa9c5c47de066a"
+            ]
+        ]
+    },
+    {
+        "id": "5e6f5d7a43d2d0dd",
+        "type": "ui_gauge",
+        "z": "d1f88d95ee17136b",
+        "g": "77a6a52fcb9bad0f",
+        "name": "Light Intensity",
+        "group": "c7d2fe6968cd9c8e",
+        "order": 4,
+        "width": "4",
+        "height": 4,
+        "gtype": "gage",
+        "title": "Light Intensity Gauge",
+        "label": "units",
+        "format": "{{payload}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "0.3",
+        "seg2": "0.6",
+        "diff": false,
+        "className": "",
+        "x": 520,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "739023b314a31355",
+        "type": "ui_chart",
+        "z": "d1f88d95ee17136b",
+        "g": "77a6a52fcb9bad0f",
+        "name": "",
+        "group": "c7d2fe6968cd9c8e",
+        "order": 5,
+        "width": "4",
+        "height": 4,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "1",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 510,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2cbed0dcb5590a27",
+        "type": "function",
+        "z": "d1f88d95ee17136b",
+        "g": "ed98d08575cc2f69",
+        "name": "function 30",
+        "func": "\nreturn {\n    payload:msg.payload\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1430,
+        "y": 340,
+        "wires": [
+            [
+                "b7420e6f1f2b4918"
+            ]
+        ]
+    },
+    {
+        "id": "b7420e6f1f2b4918",
+        "type": "mqtt out",
+        "z": "d1f88d95ee17136b",
+        "g": "ed98d08575cc2f69",
+        "name": "",
+        "topic": "MINIMUM-SERVO-ANGLE",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "604bc44edd7f1330",
+        "x": 1500,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "3f6a375f517c737c",
+        "type": "function",
+        "z": "d1f88d95ee17136b",
+        "g": "ed98d08575cc2f69",
+        "name": "function 1",
+        "func": "let teta_offset = flow.get(\"teta_offset\") || 30;\nlet ctrl_fac = flow.get(\"ctrl_fac\") || 0.75 ;\nlet actual_temp = global.get(\"actual_temp\") || 29 ;\nlet ideal_temp = global.get(\"ideal_temp\") || 30;\nlet sampling_interval = global.get(\"sampling_interval\") || 5;\nlet sending_interval = global.get(\"sending_interval\") ||120 ;\nlet lt_intensity = global.get(\"lt_intensity\") || 0.5;\n\n\nlet teta = teta_offset + (180 - teta_offset)*lt_intensity*ctrl_fac* (Math.log(sampling_interval/sending_interval)) * (actual_temp/ideal_temp)  ;\nif (teta < teta_offset){\n    teta=teta_offset;\n}\nmsg.payload=teta;\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1220,
+        "y": 460,
+        "wires": [
+            [
+                "a36564fc68f393d9",
+                "2cbed0dcb5590a27"
+            ]
+        ]
+    },
+    {
+        "id": "a36564fc68f393d9",
+        "type": "ui_gauge",
+        "z": "d1f88d95ee17136b",
+        "g": "ed98d08575cc2f69",
+        "name": "",
+        "group": "ef96d5086de3d3cd",
+        "order": 4,
+        "width": "4",
+        "height": "4",
+        "gtype": "gage",
+        "title": "Servo angle",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "180",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1410,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "455380e531d7f30f",
+        "type": "ui_slider",
+        "z": "d1f88d95ee17136b",
+        "g": "ed98d08575cc2f69",
+        "name": "",
+        "label": "Teta offset",
+        "tooltip": "",
+        "group": "ef96d5086de3d3cd",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "passthru": true,
+        "outs": "end",
+        "topic": "payload",
+        "topicType": "msg",
+        "min": 0,
+        "max": "120",
+        "step": 1,
+        "className": "",
+        "x": 830,
+        "y": 280,
+        "wires": [
+            [
+                "3c0edf4364d79927"
+            ]
+        ]
+    },
+    {
+        "id": "732943e01930899e",
+        "type": "ui_slider",
+        "z": "d1f88d95ee17136b",
+        "g": "ed98d08575cc2f69",
+        "name": "",
+        "label": "Cotrolling factor",
+        "tooltip": "",
+        "group": "ef96d5086de3d3cd",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "control",
+        "topicType": "global",
+        "min": 0,
+        "max": "1",
+        "step": "0.01",
+        "className": "",
+        "x": 840,
+        "y": 620,
+        "wires": [
+            [
+                "dd9b51b4c7f05b20"
+            ]
+        ]
+    },
+    {
+        "id": "3c0edf4364d79927",
+        "type": "function",
+        "z": "d1f88d95ee17136b",
+        "g": "ed98d08575cc2f69",
+        "name": "function 2",
+        "func": "let teta = parseFloat(msg.payload);\nflow.set(\"teta_offset\", Number(msg.payload));\nreturn { payload: teta };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 320,
+        "wires": [
+            [
+                "3f6a375f517c737c"
+            ]
+        ]
+    },
+    {
+        "id": "dd9b51b4c7f05b20",
+        "type": "function",
+        "z": "d1f88d95ee17136b",
+        "g": "ed98d08575cc2f69",
+        "name": "function 3",
+        "func": "let control= parseFloat(msg.payload);\nflow.set(\"ctrl_fac\", Number(msg.payload));\nreturn {payload: control};\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 560,
+        "wires": [
+            [
+                "3f6a375f517c737c"
+            ]
+        ]
+    },
+    {
+        "id": "09455a62c3621e42",
+        "type": "ui_slider",
+        "z": "d1f88d95ee17136b",
+        "g": "ed98d08575cc2f69",
+        "name": "",
+        "label": "Ideal temperature",
+        "tooltip": "",
+        "group": "ef96d5086de3d3cd",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "10",
+        "max": "40",
+        "step": 1,
+        "className": "",
+        "x": 850,
+        "y": 680,
+        "wires": [
+            [
+                "832007ecb119be53"
+            ]
+        ]
+    },
+    {
+        "id": "832007ecb119be53",
+        "type": "function",
+        "z": "d1f88d95ee17136b",
+        "g": "ed98d08575cc2f69",
+        "name": "function 4",
+        "func": "let ideal_tem = parseFloat(msg.payload);\nglobal.set(\"ideal_temp\", Number(msg.payload));\nreturn { payload: ideal_tem };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1060,
+        "y": 640,
+        "wires": [
+            [
+                "3f6a375f517c737c"
+            ]
+        ]
+    },
+    {
+        "id": "6703c76b9f327d5a",
+        "type": "function",
+        "z": "d1f88d95ee17136b",
+        "g": "b2b5e2c25859f82f",
+        "name": "function 5",
+        "func": "let actual_temp = parseFloat(msg.payload);\nglobal.set(\"actual_temp\", Number(msg.payload));\nreturn { payload: actual_temp };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 620,
+        "wires": [
+            [
+                "3f6a375f517c737c"
+            ]
+        ]
+    },
+    {
+        "id": "140d4d9b2af28fe3",
+        "type": "ui_slider",
+        "z": "d1f88d95ee17136b",
+        "g": "77a6a52fcb9bad0f",
+        "name": "",
+        "label": "sampling interval",
+        "tooltip": "",
+        "group": "c7d2fe6968cd9c8e",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "1",
+        "max": 10,
+        "step": 1,
+        "className": "",
+        "x": 270,
+        "y": 280,
+        "wires": [
+            [
+                "114eb36ff23ca896"
+            ]
+        ]
+    },
+    {
+        "id": "9cbf8912078ac5a6",
+        "type": "ui_slider",
+        "z": "d1f88d95ee17136b",
+        "g": "77a6a52fcb9bad0f",
+        "name": "",
+        "label": "sending interval",
+        "tooltip": "",
+        "group": "c7d2fe6968cd9c8e",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "end",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "1",
+        "max": "240",
+        "step": 1,
+        "className": "",
+        "x": 240,
+        "y": 400,
+        "wires": [
+            [
+                "528588268beb3075"
+            ]
+        ]
+    },
+    {
+        "id": "114eb36ff23ca896",
+        "type": "function",
+        "z": "d1f88d95ee17136b",
+        "g": "77a6a52fcb9bad0f",
+        "name": "function 6",
+        "func": "let sampling_interval = parseFloat(msg.payload);\nglobal.set(\"sampling_interval\", Number(msg.payload));\nreturn { payload: sampling_interval };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 400,
+        "wires": [
+            [
+                "3f6a375f517c737c",
+                "364fee15f30171b0"
+            ]
+        ]
+    },
+    {
+        "id": "528588268beb3075",
+        "type": "function",
+        "z": "d1f88d95ee17136b",
+        "g": "77a6a52fcb9bad0f",
+        "name": "function 7",
+        "func": "let sending_interval = parseFloat(msg.payload);\nglobal.set(\"sending_interval\", Number(msg.payload));\nreturn { payload: sending_interval };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 460,
+        "wires": [
+            [
+                "3f6a375f517c737c",
+                "8bf96a46c5b8a92c"
+            ]
+        ]
+    },
+    {
+        "id": "53fa9c5c47de066a",
+        "type": "function",
+        "z": "d1f88d95ee17136b",
+        "g": "77a6a52fcb9bad0f",
+        "name": "function 8",
+        "func": "let lt_intensity = parseFloat(msg.payload);\nglobal.set(\"lt_intensity\", Number(msg.payload));\nreturn { payload: lt_intensity };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 260,
+        "wires": [
+            [
+                "3f6a375f517c737c"
+            ]
+        ]
+    },
+    {
+        "id": "364fee15f30171b0",
+        "type": "mqtt out",
+        "z": "d1f88d95ee17136b",
+        "g": "77a6a52fcb9bad0f",
+        "name": "",
+        "topic": "sampling_interval",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "604bc44edd7f1330",
+        "x": 550,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "8bf96a46c5b8a92c",
+        "type": "mqtt out",
+        "z": "d1f88d95ee17136b",
+        "g": "77a6a52fcb9bad0f",
+        "name": "",
+        "topic": "sending_interval",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "604bc44edd7f1330",
+        "x": 540,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "fe0af331ccec81a9",
+        "type": "ui_spacer",
+        "z": "d1f88d95ee17136b",
+        "name": "spacer",
+        "group": "d4ac752d0c0c9669",
+        "order": 2,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "291ff29ab03ba50b",
+        "type": "ui_spacer",
+        "z": "d1f88d95ee17136b",
+        "name": "spacer",
+        "group": "d4ac752d0c0c9669",
+        "order": 3,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "e5ebe838e2fa693c",
+        "type": "ui_spacer",
+        "z": "d1f88d95ee17136b",
+        "name": "spacer",
+        "group": "374eef6fb10b2e9f",
+        "order": 1,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "7b7ee0a8c43d8888",
+        "type": "ui_spacer",
+        "z": "d1f88d95ee17136b",
+        "name": "spacer",
+        "group": "",
+        "order": 2,
+        "width": 5,
+        "height": 1
+    },
+    {
+        "id": "c670d2cd27594618",
+        "type": "ui_spacer",
+        "z": "d1f88d95ee17136b",
+        "name": "spacer",
+        "group": "ef96d5086de3d3cd",
+        "order": 3,
+        "width": "4",
+        "height": "1"
+    },
+    {
+        "id": "604bc44edd7f1330",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ea6b285e142738fa",
+        "type": "ui_group",
+        "name": "Temperature",
+        "tab": "679a3e0ec74a6e15",
+        "order": 3,
+        "disp": true,
+        "width": "5",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "c7d2fe6968cd9c8e",
+        "type": "ui_group",
+        "name": "Light Intensity",
+        "tab": "679a3e0ec74a6e15",
+        "order": 2,
+        "disp": true,
+        "width": "9",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "ef96d5086de3d3cd",
+        "type": "ui_group",
+        "name": "Main",
+        "tab": "679a3e0ec74a6e15",
+        "order": 1,
+        "disp": true,
+        "width": "8",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "679a3e0ec74a6e15",
+        "type": "ui_tab",
+        "name": "DJTG_Medibox",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
