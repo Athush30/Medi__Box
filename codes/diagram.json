@@ -120,7 +120,6 @@
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
     [ "esp:5V", "bb1:bp.1", "red", [ "h-28.65", "v-201.6", "h-192", "v9.6" ] ],
-    [ "esp:34", "bb1:5t.a", "green", [ "h0" ] ],
     [ "bb1:8t.a", "esp:35", "green", [ "h67.2", "v-28.8" ] ],
     [ "esp:32", "bb1:11t.a", "green", [ "h-9.45", "v48", "h-9.6" ] ],
     [ "bb1:14t.a", "esp:33", "green", [ "h67.2", "v-19.2" ] ],
@@ -146,8 +145,6 @@
     [ "esp:15", "bb1:28t.a", "green", [ "v0" ] ],
     [ "bb1:tp.1", "ldr1:VCC", "red", [ "v-65.6", "h95.7", "v-19.2" ] ],
     [ "ldr1:GND", "bb1:tn.4", "black", [ "h9.6", "v38", "h-48", "v105.6" ] ],
-    [ "esp:16", "ldr1:AO", "green", [ "h38.4", "v-9.6" ] ],
-    [ "servo1:PWM", "esp:17", "green", [ "h-28.8", "v29", "h364.8", "v230.4" ] ],
     [ "servo1:V+", "bb1:bp.3", "red", [ "h-57.6", "v211.3" ] ],
     [ "btn1:1.l", "bb1:5b.f", "", [ "$bb" ] ],
     [ "btn1:2.l", "bb1:7b.f", "", [ "$bb" ] ],
@@ -183,7 +180,10 @@
     [ "led1:C", "bb1:26t.c", "", [ "$bb" ] ],
     [ "led2:A", "bb1:28t.c", "", [ "$bb" ] ],
     [ "led2:C", "bb1:29t.c", "", [ "$bb" ] ],
-    [ "servo1:GND", "bb1:bn.2", "black", [ "h-67.2", "v201.6" ] ]
+    [ "servo1:GND", "bb1:bn.2", "black", [ "h-67.2", "v201.6" ] ],
+    [ "bb1:5t.a", "esp:26", "green", [ "h9.6", "v38.4" ] ],
+    [ "ldr1:AO", "esp:34", "green", [ "h-76.8", "v28.1" ] ],
+    [ "esp:25", "servo1:PWM", "green", [ "v0", "h76.95", "v-240", "h-268.8" ] ]
   ],
   "dependencies": {}
 }
