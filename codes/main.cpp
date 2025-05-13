@@ -20,13 +20,13 @@
 #define BUZZER 18
 #define LED_1 15
 #define LED_2 2
-#define CANCEL 34
+#define CANCEL 26
 #define UP 35
 #define DOWN 32
 #define OK 33
 #define DHT 12
-#define servoPin 17
-#define ldr 16
+#define servoPin 25
+#define ldr 34
 
 Adafruit_SSD1306 display(SCREEN_WIDTH,SCREEN_HEIGHT, &Wire, OLED_RESET);
 DHTesp dhtSensor;
@@ -45,8 +45,13 @@ int b=494;
 int c_h =523;
 int notes[]={c,d,e,f,g,a,b,c_h};
 float ServoAngle=0.0;
-float SamplingInterval=0.0;
-float SendingInterval=0.0;
+float SamplingInterval=5.0;
+float SendingInterval=120.0;
+float temp=0.0;
+float light_intensity=0.0;
+unsigned long sec_sample=0;
+unsigned long sec_send=0;
+int n=0;
 
 int days=0;
 int hours =0;
@@ -447,6 +452,7 @@ void go_to_menu(){
 void check_temp(void){
   TempAndHumidity data = dhtSensor.getTempAndHumidity();
   bool all_good = true;
+  temp= data.temperature;
   if (data.temperature > 32){
     all_good = false;
     digitalWrite(LED_2, HIGH);
@@ -521,6 +527,12 @@ void receiveCallback(char* topic, byte* payload, unsigned int length){
   }
 }
 
+void lightIntensity(){
+  float I = analogRead(ldr)*1.00;
+  light_intensity += 1-(I/4096.00);
+  n+=1;
+
+}
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -533,6 +545,9 @@ void setup() {
   pinMode(OK ,INPUT);
   std::cout << "connected";
   dhtSensor.setup(DHT, DHTesp::DHT22);
+  servoMotor.setPeriodHertz(50);       // Standard servo PWM frequency
+  servoMotor.attach(servoPin, 500, 2400);  // Pin, min/max pulse width in µs
+  servoMotor.write(0); 
   std::cout << "connected";
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDERSS)){
     Serial.println(F("SSD1306 allocation failed"));
@@ -564,7 +579,7 @@ void setup() {
   
   int UTC_Offset=UTC_OFFSET[0];
   configTime(UTC_Offset, UTC_OFFSET_DST, NTP_SERVER);
-
+  lightIntensity();
   
 }
 
@@ -574,13 +589,30 @@ void loop() {
     Serial.println("Reconnecting to MQTT");
     connectToBroker();
   }
+  check_temp();
+  
   mqttClient.loop();
-  Serial.println(SamplingInterval);
+  servoMotor.write(ServoAngle);
+  if (SamplingInterval<=(millis()/1000)-sec_sample){
+      sec_sample = millis()/1000;
+      lightIntensity();
+      
+  }
+  if (SendingInterval<=(millis()/1000)-sec_send){
+      sec_send = millis()/1000;
+      light_intensity /= n;
+      n=0;
+      Serial.println("ltintensity");
+      Serial.println(light_intensity);
+      mqttClient.publish("TEMP", String(temp).c_str());
+      mqttClient.publish("Light intensity", String(light_intensity).c_str());
+
+  }
+
   update_time_with_check_alarm();
   if (digitalRead(CANCEL) == LOW){
     delay(1000);
     Serial.println("Menu");
     go_to_menu();
   }
-  check_temp();
 }
