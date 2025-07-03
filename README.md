@@ -46,8 +46,7 @@ This project implements an **ESP32-based Medibox** that reminds users to take th
 
 ## 🔌 Circuit Diagram
 
-Wiring diagram is included as `wiring_diagram.fzz` (Fritzing format). You can open it using the [Fritzing tool](https://fritzing.org/).
-
+Wiring diagram is included as `diagram.jsin` .
 ---
 
 ## 🧠 How It Works
