@@ -1,59 +1,118 @@
-# Medi__Box
+# 💊 Medibox – IoT-Based Medicine Reminder and Monitoring System
 
-## Overview
-The Medi Box project is an ESP32-based smart medicine reminder system developed using Wokwi. It features an OLED display, buzzer, LEDs, buttons, and a DHT22 sensor to monitor temperature and humidity. The system connects to WiFi and synchronizes time using an NTP server to trigger alarms for medicine reminders.
+This project implements an **ESP32-based Medibox** that reminds users to take their medicine via an alarm system and monitors environmental conditions like **temperature**, **humidity**, and **light intensity**. It connects to the **internet via Wi-Fi**, synchronizes time using **NTP**, and uses **MQTT (via Node-RED)** to remotely monitor and control parameters such as **sampling interval**, **sending interval**, and **servo motor angle**.
 
-## Features
-- **Time Synchronization:** Retrieves real-time clock data via an NTP server.
-- **Alarm System:** Two configurable alarms for medicine reminders.
-- **Buzzer Alerts:** Sound notifications when it's time to take medicine.
-- **LED Indicators:** LED_1 and LED_2 provide visual status for alarms and environmental conditions.
-- **Temperature & Humidity Monitoring:** Uses a DHT22 sensor to check environmental conditions and alerts if values exceed defined thresholds.
-- **User Interface:** OLED display and buttons (UP, DOWN, OK, CANCEL) for navigating menus and setting alarms.
-- **WiFi Connectivity:** Connects to WiFi for real-time clock updates.
+---
 
-## Components Used
-- ESP32
-- OLED Display (SSD1306)
-- DHT22 Temperature & Humidity Sensor
-- Buzzer
-- LEDs
-- Push Buttons
+## 🚀 Features
 
-## Pin Configuration
-| Component | Pin |
-|-----------|-----|
-| Buzzer    | 18  |
-| LED_1     | 15  |
-| LED_2     | 2   |
-| CANCEL    | 34  |
-| UP        | 35  |
-| DOWN      | 32  |
-| OK        | 33  |
-| DHT22     | 12  |
+- ⏰ **Real-time Clock Synchronization** via NTP
+- 🔔 **Multi-Alarm System** with LED & Buzzer Notifications
+- 📊 **Environment Monitoring**
+  - Temperature (DHT22)
+  - Humidity (DHT22)
+  - Light Intensity (LDR)
+- 🛰️ **Remote MQTT Control via Node-RED**
+  - Set sampling & sending intervals
+  - Control servo motor angle
+- 🧠 **OLED Interface & Button Menu**
+  - Set time offset from UTC
+  - Set/Remove alarms
+  - View active alarms
+- 🧪 **Safety Alert System**
+  - Warnings for out-of-range temperature and humidity via LED and screen
 
-## How to Use
-1. Power on the ESP32 and connect to WiFi.
-2. The system will synchronize time via NTP.
-3. Navigate the menu using UP and DOWN buttons.
-4. Set alarms for medicine reminders.
-5. The buzzer and LED_1 will activate when an alarm is triggered.
-6. Press CANCEL to stop the alarm or OK to snooze it.
-7. Monitor temperature and humidity status(High/Low) on the display.
+---
 
-## Installation & Setup
-1. Load the code into the ESP32 using Arduino IDE.
-2. Ensure required libraries are installed:
-   - `Adafruit_GFX.h`
-   - `Adafruit_SSD1306.h`
-   - `WiFi.h`
-   - `DHTesp.h`
-3. Connect the ESP32 to Wokwi for simulation or real hardware.
+## 📦 Hardware Components
 
-## Future Enhancements
-- Add cloud integration for remote monitoring.
-- Implement voice alerts.
-- Extend alarm storage to multiple reminders.
+| Component        | Quantity |
+|------------------|----------|
+| ESP32 Dev Board   | 1        |
+| DHT22 Sensor      | 1        |
+| LDR (Light Sensor)| 1        |
+| OLED Display (SSD1306) | 1  |
+| Buzzer            | 1        |
+| LEDs              | 2        |
+| Push Buttons      | 4        |
+| Servo Motor       | 1        |
+| Resistors         | as needed|
+| Breadboard & Wires| as needed|
 
-## License
-This project is open-source and can be modified or redistributed under the MIT License.
+---
+
+
+---
+
+## 🔌 Circuit Diagram
+
+Wiring diagram is included as `wiring_diagram.fzz` (Fritzing format). You can open it using the [Fritzing tool](https://fritzing.org/).
+
+---
+
+## 🧠 How It Works
+
+### 1. Time Synchronization
+- Uses **NTP server** to sync local time based on a UTC offset.
+- Offset can be configured through the menu system.
+
+### 2. Alarm System
+- Supports 2 configurable alarms.
+- Each alarm triggers a buzzer and LED with snooze or cancel options via buttons.
+
+### 3. Environmental Monitoring
+- Monitors temperature & humidity via **DHT22**
+- Calculates light intensity via **LDR**
+- Displays warning messages on OLED and sets LED indicator if values exceed safe thresholds.
+
+### 4. MQTT Communication
+- Connects to `test.mosquitto.org`
+- Publishes:
+  - `TEMP` → temperature data
+  - `Light intensity` → average light data
+- Subscribes:
+  - `sampling_interval` → time between light sensor readings
+  - `sending_interval` → time between MQTT publishes
+  - `MINIMUM-SERVO-ANGLE` → adjust servo motor angle remotely
+
+### 5. Node-RED Dashboard
+- Use the provided `dashboard.json` to visualize:
+  - Live temperature and light intensity charts
+  - Control sliders for:
+    - Sampling interval
+    - Sending interval
+    - Servo angle
+
+---
+
+## 📲 MQTT Topics
+
+| Topic               | Direction | Data Type | Description                     |
+|---------------------|-----------|-----------|---------------------------------|
+| `TEMP`              | Publish   | `float`   | Current temperature (°C)       |
+| `Light intensity`   | Publish   | `float`   | Normalized light intensity     |
+| `sampling_interval` | Subscribe | `float`   | Time between light readings (s)|
+| `sending_interval`  | Subscribe | `float`   | Time between data sends (s)    |
+| `MINIMUM-SERVO-ANGLE`| Subscribe| `float`   | Servo motor angle              |
+
+---
+
+
+## 🧪 Screenshots
+
+
+---![Screenshot 2025-07-03 120317](https://github.com/user-attachments/assets/3d2af4f0-e442-4e45-a8b7-6413833fe12d)
+
+![Screenshot 2025-07-03 120344](https://github.com/user-attachments/assets/c765855b-c3f6-4a09-aa6a-7fd2806e6d21)
+
+![Screenshot 2025-07-03 120404](https://github.com/user-attachments/assets/6576eaf9-aea0-44d4-81aa-5945805bff17)
+
+## 🛠️ Future Improvements
+
+- Add cloud storage (Firebase/ThingSpeak)
+- Add medicine slot detection (via IR sensors)
+- Battery backup support
+- SMS or app-based alarm alerts
+
+---
+
