@@ -46,7 +46,7 @@ This project implements an **ESP32-based Medibox** that reminds users to take th
 
 ## 🔌 Circuit Diagram
 
-Wiring diagram is included as `diagram.jsin` .
+Wiring diagram is included as `diagram.json` .
 ---
 
 ## 🧠 How It Works
